@@ -1,0 +1,6 @@
+img{
+  margin:auto;display:flex;justify-content:center;
+}
+.container{
+  background-color: orange; width: fit-content; padding: 15px; margin: 25px auto;border-radius: 5px;
+}
