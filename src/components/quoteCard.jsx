@@ -6,8 +6,12 @@ class QuoteCard extends React.Component{
   constructor(props){
     super(props);
     this.getSimpsonsQuote = this.getSimpsonsQuote.bind(this);
-    this.checkStateOfNull = this.checkStateOfNull.bind(this);
-    this.state = {};
+    this.state = {
+      character:null,
+      image:null,
+      quote:null,
+      count:0
+    };
   };
   getSimpsonsQuote(){
     axios.get(`https://simpsons-quotes-api.herokuapp.com/quotes`)
@@ -16,19 +20,33 @@ class QuoteCard extends React.Component{
         this.setState({...data[0]})
       })
   }
-  checkStateOfNull(){
-    if(this.state.character===undefined){
-      this.getSimpsonsQuote()
-    }
+  componentDidMount(){
+    this.getSimpsonsQuote();
+  }
+  incrementation(){
+    let test = this.state.count;
+    this.setState({count: test+=1})
+  }
+  decrementation(){
+    let test = this.state.count;
+    this.setState({count: test-=1})
   }
   render(){
-    this.checkStateOfNull();
     return(
       <div className="container">
-        <h1>{this.state.character}</h1>
-        <p><strong>{this.state.quote}</strong></p>
-        <img src={this.state.image} alt={this.state.character} />
+        {this.state.character ? (
+          <div>
+            <h1>{this.state.character}</h1>
+            <p><strong>{this.state.quote}</strong></p>
+            <img src={this.state.image} alt={this.state.character} />
+          </div>
+        ) : (
+          <p>Loading...</p>
+        )}
         <button type="button" onClick={this.getSimpsonsQuote}>Get new quote</button>
+        <button type="button" onClick={()=>this.incrementation()}>+</button>
+        <button type="button" onClick={()=>this.decrementation()}>-</button>
+        <p>{this.state.count}</p>
       </div>
     );
   };
